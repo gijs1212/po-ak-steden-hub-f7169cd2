@@ -113,7 +113,8 @@ const mapPoints: MapPoint[] = [
       "/droomstad/punten/12-4.png",
       "/droomstad/punten/12-5.png",
       "/droomstad/punten/12-6.png",
-      "/droomstad/punten/12-7.png"
+      "/droomstad/punten/12-7.png",
+      "/droomstad/punten/12-8.png"
     ]
   }
 ];
@@ -212,7 +213,7 @@ const InteractiveMap = () => {
       )}
 
       <p className="text-center text-sm text-muted-foreground mt-3">
-        Klik op een punt om meer informatie te zien
+        Klik op een punt voor meer info, klik op een foto voor vergroting
       </p>
     </div>
   );
