@@ -102,7 +102,7 @@ const mapPoints: MapPoint[] = [
   },
   {
     id: 12,
-    x: 62,
+    x: 35,
     y: 25,
     title: "Landschap & Duurzame Architectuur",
     description: "Het gebied waar deze stad zich in bevindt is in de benedenloop, bij de kust. Het landschap waar de stad in ligt lijkt op het landschap van Nederland. De bijgevoegde foto's zijn voorbeelden van hoe de gebouwen in de stad er uit zouden kunnen zien. De hele stad is ingericht zodat er zo min mogelijk uitstoot is en dat daar voor gecompenseerd wordt door de wolkenkrabbers met planten om de CO2 de lucht uit te krijgen en een rustigere/koelere stad te krijgen.",
