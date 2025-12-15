@@ -6,12 +6,14 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { useEffect, useRef } from "react";
 import Index from "./pages/Index";
 import QuizKaarten from "./pages/QuizKaarten";
+import QuizKaarten2 from "./pages/QuizKaarten2";
 import Top10Steden from "./pages/Top10Steden";
 import SchematischeSamenvatting from "./pages/SchematischeSamenvatting";
 import RijkEnArm from "./pages/RijkEnArm";
 import MonopolyOnderzoek from "./pages/MonopolyOnderzoek";
 import Droomstad from "./pages/Droomstad";
 import KahootQuiz from "./pages/KahootQuiz";
+import OpdrachtenBoek from "./pages/OpdrachtenBoek";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +52,8 @@ const App = () => (
             <Route path="/monopoly-onderzoek" element={<MonopolyOnderzoek />} />
             <Route path="/droomstad" element={<Droomstad />} />
             <Route path="/kahoot-quiz" element={<KahootQuiz />} />
+            <Route path="/quiz-kaarten-2" element={<QuizKaarten2 />} />
+            <Route path="/opdrachten-boek" element={<OpdrachtenBoek />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </RedirectOnRefresh>
