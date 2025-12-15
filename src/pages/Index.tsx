@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { HelpCircle, Search, Building2, MapPin, Users, GraduationCap, Gamepad2, Globe, BookOpen, Scale } from "lucide-react";
+import { HelpCircle, Search, Building2, MapPin, Users, GraduationCap, Gamepad2, Globe, BookOpen, Scale, FileText, Layers } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const menuItems = [
@@ -62,6 +62,24 @@ const menuItems = [
     description: "Speel de interactieve Blooket quiz over onze droomstad en steden",
     icon: Gamepad2,
     path: "/kahoot-quiz",
+    available: true,
+    color: "bg-primary/10",
+    iconColor: "text-primary",
+  },
+  {
+    title: "10 Quizkaarten 2",
+    description: "Nog meer interactieve flipkaarten met quizvragen over steden",
+    icon: Layers,
+    path: "/quiz-kaarten-2",
+    available: true,
+    color: "bg-secondary/20",
+    iconColor: "text-secondary",
+  },
+  {
+    title: "Opdrachten Boek",
+    description: "Bekijk de opdrachten uit het boek voor dit hoofdstuk",
+    icon: FileText,
+    path: "/opdrachten-boek",
     available: true,
     color: "bg-primary/10",
     iconColor: "text-primary",
