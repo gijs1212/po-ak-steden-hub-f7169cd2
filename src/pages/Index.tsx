@@ -80,7 +80,7 @@ const menuItems = [
     description: "Bekijk de opdrachten uit het boek voor dit hoofdstuk",
     icon: FileText,
     path: "/opdrachten-boek",
-    available: false,
+    available: true,
     color: "bg-primary/10",
     iconColor: "text-primary",
   },
