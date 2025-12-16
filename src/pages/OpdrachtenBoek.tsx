@@ -1,102 +1,164 @@
-import { ArrowLeft, BookOpen, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ArrowLeft, Download, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Printer, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
 
-interface Opdracht {
-  id: number;
-  titel: string;
-  beschrijving: string;
-  pagina?: string;
-}
-
-const opdrachten: Opdracht[] = [
-  {
-    id: 1,
-    titel: "Opdracht 1",
-    beschrijving: "Beschrijving van opdracht 1 komt hier",
-    pagina: "p. 24",
-  },
-  {
-    id: 2,
-    titel: "Opdracht 2",
-    beschrijving: "Beschrijving van opdracht 2 komt hier",
-    pagina: "p. 25",
-  },
-  {
-    id: 3,
-    titel: "Opdracht 3",
-    beschrijving: "Beschrijving van opdracht 3 komt hier",
-    pagina: "p. 26",
-  },
-  {
-    id: 4,
-    titel: "Opdracht 4",
-    beschrijving: "Beschrijving van opdracht 4 komt hier",
-    pagina: "p. 27",
-  },
-  {
-    id: 5,
-    titel: "Opdracht 5",
-    beschrijving: "Beschrijving van opdracht 5 komt hier",
-    pagina: "p. 28",
-  },
-];
+// Set up the worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const OpdrachtenBoek = () => {
+  const pdfUrl = "/documents/opdrachten-werkboek.pdf";
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [scale, setScale] = useState<number>(1.2);
+
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+  };
+
+  const goToPrevPage = () => {
+    setPageNumber((prev) => Math.max(prev - 1, 1));
+  };
+
+  const goToNextPage = () => {
+    setPageNumber((prev) => Math.min(prev + 1, numPages));
+  };
+
+  const zoomIn = () => {
+    setScale((prev) => Math.min(prev + 0.2, 2.5));
+  };
+
+  const zoomOut = () => {
+    setScale((prev) => Math.max(prev - 0.2, 0.6));
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-gradient-to-r from-primary/10 via-background to-secondary/10 border-b border-border">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4 mb-4">
-            <Link to="/">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Terug
-              </Button>
-            </Link>
-          </div>
+      {/* Header */}
+      <header className="bg-card border-b border-border py-6">
+        <div className="container mx-auto px-4">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Terug naar home
+          </Link>
           <div className="flex items-center gap-3">
             <BookOpen className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-              Opdrachten Boek
-            </h1>
+            <h1 className="text-3xl font-bold text-primary">Opdrachten Werkboek</h1>
           </div>
-          <p className="text-muted-foreground mt-2">
-            Overzicht van de opdrachten uit het boek voor Hoofdstuk 2 Steden
-          </p>
+          <p className="text-muted-foreground mt-1">Bekijk en download het werkboek</p>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {opdrachten.map((opdracht) => (
-            <Card key={opdracht.id} className="bg-card border-border hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <CheckCircle className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg text-card-foreground">
-                      {opdracht.titel}
-                    </CardTitle>
-                  </div>
-                  {opdracht.pagina && (
-                    <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
-                      {opdracht.pagina}
-                    </span>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  {opdracht.beschrijving}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+      {/* Controls */}
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={goToPrevPage}
+              disabled={pageNumber <= 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm text-muted-foreground min-w-[100px] text-center">
+              Pagina {pageNumber} van {numPages || "..."}
+            </span>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={goToNextPage}
+              disabled={pageNumber >= numPages}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" onClick={zoomOut}>
+              <ZoomOut className="h-4 w-4" />
+            </Button>
+            <span className="text-sm text-muted-foreground min-w-[60px] text-center">
+              {Math.round(scale * 100)}%
+            </span>
+            <Button variant="outline" size="icon" onClick={zoomIn}>
+              <ZoomIn className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              asChild
+            >
+              <a href={pdfUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => {
+                e.preventDefault();
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = pdfUrl;
+                document.body.appendChild(iframe);
+                iframe.onload = () => {
+                  setTimeout(() => {
+                    iframe.contentWindow?.print();
+                  }, 500);
+                };
+              }}>
+                <Printer className="h-4 w-4 mr-2" />
+                Printen
+              </a>
+            </Button>
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <a href={pdfUrl} download="opdrachten-werkboek.pdf">
+                <Download className="h-4 w-4 mr-2" />
+                Download
+              </a>
+            </Button>
+          </div>
         </div>
+      </div>
+
+      {/* PDF Viewer */}
+      <main className="container mx-auto px-4 pb-12">
+        <Card className="overflow-hidden">
+          <CardContent className="p-4 flex justify-center bg-muted/30 min-h-[70vh]">
+            <Document
+              file={pdfUrl}
+              onLoadSuccess={onDocumentLoadSuccess}
+              loading={
+                <div className="flex items-center justify-center h-[60vh]">
+                  <div className="text-muted-foreground">PDF laden...</div>
+                </div>
+              }
+              error={
+                <div className="flex flex-col items-center justify-center h-[60vh] text-center p-8">
+                  <p className="text-muted-foreground mb-4">
+                    Kon PDF niet laden. Download het bestand om te bekijken.
+                  </p>
+                  <Button asChild>
+                    <a href={pdfUrl} download="opdrachten-werkboek.pdf">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download PDF
+                    </a>
+                  </Button>
+                </div>
+              }
+            >
+              <Page
+                pageNumber={pageNumber}
+                scale={scale}
+                renderTextLayer={true}
+                renderAnnotationLayer={true}
+              />
+            </Document>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );
