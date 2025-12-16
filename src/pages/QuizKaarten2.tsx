@@ -28,7 +28,7 @@ const QuizKaarten2 = () => {
             @page { size: A4 landscape; margin: 5mm; }
             body { margin: 0; padding: 10px; }
             .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-            .grid img { width: 100%; height: auto; object-fit: contain; }
+            .grid img { width: 100%; height: auto; object-fit: contain; border: 2px solid black; box-sizing: border-box; }
           </style>
         </head>
         <body>
